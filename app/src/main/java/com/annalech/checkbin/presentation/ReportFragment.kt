@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.annalech.checkbin.R
-import com.annalech.checkbin.databinding.BinSearchFragmentBinding
 import com.annalech.checkbin.databinding.SearchReportFragmentBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class ReportFragment : Fragment(R.layout.search_report_fragment) {
 
     private var _binding: SearchReportFragmentBinding? = null
@@ -18,9 +20,9 @@ class ReportFragment : Fragment(R.layout.search_report_fragment) {
         get() = _binding ?: throw Exception("No SearchReportFragmentBinding")
 
     private lateinit var adapter: BinAdapter
-    val viewModel by lazy {
-        ViewModelProvider(this)[BinViewModel::class.java]
-    }
+
+    //val viewModel:BinViewModel by lazy { ViewModelProvider(this)[BinViewModel::class.java] }
+    private val viewModel: BinViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +37,7 @@ class ReportFragment : Fragment(R.layout.search_report_fragment) {
         super.onViewCreated(view, savedInstanceState)
         initalizeRecyclerView()
 
-        viewModel.listSearchBins.observe(viewLifecycleOwner){listBins->
+        viewModel.listSearchBins.observe(viewLifecycleOwner) { listBins ->
             adapter.differ.submitList(listBins)
         }
 

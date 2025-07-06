@@ -8,10 +8,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.annalech.checkbin.R
 import com.annalech.checkbin.databinding.BinSearchFragmentBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+
+@AndroidEntryPoint
 class BinSearchFragment : Fragment(R.layout.bin_search_fragment) {
 
     private var _binding: BinSearchFragmentBinding? = null
@@ -19,7 +24,8 @@ class BinSearchFragment : Fragment(R.layout.bin_search_fragment) {
         get() = _binding ?: throw Exception("No BinSearchFragmentBinding")
 
 
-    val viewModel by lazy { ViewModelProvider(this)[BinViewModel::class.java] }
+    //   val viewModel: BinViewModel by lazy { ViewModelProvider(this)[BinViewModel::class.java] }
+    private val viewModel: BinViewModel by viewModels()
 
 
     override fun onCreateView(
@@ -52,34 +58,33 @@ class BinSearchFragment : Fragment(R.layout.bin_search_fragment) {
         }
 
         //отображение информации по BIN
-        viewModel.binInfo.observe(viewLifecycleOwner) {
-            info ->
+        viewModel.binInfo.observe(viewLifecycleOwner) { info ->
 
             binding.tvErrorMessage.visibility = View.GONE
             binding.resultScrollView.visibility = View.VISIBLE
 
-            val statusPrepaid = if(info.prepaid == true){
+            val statusPrepaid = if (info.prepaid == true) {
                 "Да"
-            }else{
+            } else {
                 "Информация отсутствует"
             }
 
             binding.tvScheme.text = "Тип карты: ${info.scheme ?: "Информация отсутствует"}"
-            binding.tvBrand.text =  "Бренд: ${info.brand ?: "Информация отсутствует"}"
+            binding.tvBrand.text = "Бренд: ${info.brand ?: "Информация отсутствует"}"
             binding.tvType.text = "Тип: ${info.type ?: "Информация отсутствует"}"
             binding.tvPrepaid.text = "Предоплаченная: $statusPrepaid"
             binding.tvCountry.text = "Страна: ${info.country?.name ?: "Информация отсутствует"}"
 
             binding.tvBankName.text = "Банк: ${info.bank?.name ?: "Информация отсутствует"}"
             binding.tvBankCity.text = "Город банка: ${info.bank?.city ?: "Информация отсутствует"}"
-            binding.tvBankUrl.text =  "Сайт: ${info.bank?.url ?: "Информация отсутствует"}"
+            binding.tvBankUrl.text = "Сайт: ${info.bank?.url ?: "Информация отсутствует"}"
             binding.tvBankPhone.text = "Телефон: ${info.bank?.phone ?: "Информация отсутствует"}"
 
         }
 
         //ошибка получение информации по BIN
-        viewModel.isError.observe(viewLifecycleOwner){isError ->
-            if (isError){
+        viewModel.isError.observe(viewLifecycleOwner) { isError ->
+            if (isError) {
                 binding.resultScrollView.visibility = View.GONE
                 binding.tvErrorMessage.visibility = View.VISIBLE
             }

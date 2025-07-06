@@ -1,26 +1,33 @@
 package com.annalech.checkbin.presentation
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.annalech.checkbin.data.RepositoryImpl
+
 import com.annalech.checkbin.data.database.BinInfoDBModel
 import com.annalech.checkbin.data.network.ApiFactory
 import com.annalech.checkbin.data.network.model.BinInfo
 import com.annalech.checkbin.domain.getAllSaveBinsUseCase
 import com.annalech.checkbin.domain.saveBinInDbUseCase
 import com.annalech.checkbin.utility.Mapper
+import dagger.hilt.android.lifecycle.HiltViewModel
+
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class BinViewModel(application: Application) : AndroidViewModel(application) {
 
-    val repository = RepositoryImpl(application)
+@HiltViewModel
+class BinViewModel @Inject constructor(
+     private val getBinuseCase: getAllSaveBinsUseCase,
+     private val saveBinUseCase: saveBinInDbUseCase
+) : ViewModel() {
+
 
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean>
@@ -32,7 +39,7 @@ class BinViewModel(application: Application) : AndroidViewModel(application) {
         get() = _binInfo
 
     //получем все Bin из базы  даннных
-    val listSearchBins = getAllSaveBinsUseCase(repository = repository).invoke()
+    val listSearchBins = getBinuseCase.invoke()
     val scope = CoroutineScope(Dispatchers.Default)
 
     fun getBinInfo(bin: String) {
@@ -83,7 +90,7 @@ class BinViewModel(application: Application) : AndroidViewModel(application) {
     }
     fun saveBinInfo(dbModel :BinInfoDBModel) {
         scope.launch {
-            saveBinInDbUseCase(repository = repository).invoke(dbModel)
+            saveBinUseCase.invoke(dbModel)
         }
     }
 

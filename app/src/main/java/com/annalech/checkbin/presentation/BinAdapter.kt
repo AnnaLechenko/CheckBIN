@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.annalech.checkbin.data.database.BinInfoDBModel
 import com.annalech.checkbin.databinding.BinInfoItemBinding
+import dagger.hilt.android.AndroidEntryPoint
+
 
 class BinAdapter : RecyclerView.Adapter<BinAdapter.ViewHolder>() {
 
