@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/bin_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:background="#F1DFF8"
+    android:padding="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView android:id="@+id/tvBIN"
+        style="@style/ResultText" android:text="BIN: "/>
+
+    <TextView android:id="@+id/tvScheme"
+        style="@style/ResultText" android:text="Тип карты: "/>
+
+    <TextView android:id="@+id/tvBrand"
+        style="@style/ResultText" android:text="Бренд: "/>
+
+    <TextView android:id="@+id/tvType"
+        style="@style/ResultText" android:text="Тип: "/>
+
+    <TextView android:id="@+id/tvPrepaid"
+        style="@style/ResultText" android:text="Предоплаченная: "/>
+
+    <TextView android:id="@+id/tvCountry"
+        style="@style/ResultText" android:text="Страна: "/>
+
+    <TextView android:id="@+id/tvBankName"
+        style="@style/ResultText" android:text="Банк: "/>
+
+    <TextView android:id="@+id/tvBankCity"
+        style="@style/ResultText" android:text="Город банка: "/>
+
+    <TextView android:id="@+id/tvBankUrl"
+        style="@style/ResultText" android:text="Сайт банка:" android:autoLink="web"/>
+
+    <TextView android:id="@+id/tvBankPhone"
+        style="@style/ResultText" android:text="Телефон банка:" android:autoLink="phone"/>
+
+</LinearLayout>

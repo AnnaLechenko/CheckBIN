@@ -35,6 +35,7 @@ class BinSearchFragment : Fragment(R.layout.bin_search_fragment) {
         super.onViewCreated(view, savedInstanceState)
 
 
+        //поиск по BIN
         binding.btnSearch.setOnClickListener {
             val inputText = binding.etBinInput.text
             if (inputText.isNotEmpty() && inputText.isDigitsOnly() && inputText.length in 6..8) {
@@ -50,7 +51,7 @@ class BinSearchFragment : Fragment(R.layout.bin_search_fragment) {
 
         }
 
-
+        //отображение информации по BIN
         viewModel.binInfo.observe(viewLifecycleOwner) {
             info ->
 
@@ -76,6 +77,7 @@ class BinSearchFragment : Fragment(R.layout.bin_search_fragment) {
 
         }
 
+        //ошибка получение информации по BIN
         viewModel.isError.observe(viewLifecycleOwner){isError ->
             if (isError){
                 binding.resultScrollView.visibility = View.GONE

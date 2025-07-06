@@ -1,18 +1,26 @@
 package com.annalech.checkbin.presentation
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.annalech.checkbin.data.RepositoryImpl
+import com.annalech.checkbin.data.database.BinInfoDBModel
 import com.annalech.checkbin.data.network.ApiFactory
 import com.annalech.checkbin.data.network.model.BinInfo
+import com.annalech.checkbin.domain.getAllSaveBinsUseCase
+import com.annalech.checkbin.domain.saveBinInDbUseCase
+import com.annalech.checkbin.utility.Mapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class BinViewModel : ViewModel() {
+class BinViewModel(application: Application) : AndroidViewModel(application) {
 
+    val repository = RepositoryImpl(application)
 
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean>
@@ -23,6 +31,9 @@ class BinViewModel : ViewModel() {
     val binInfo: LiveData<BinInfo>
         get() = _binInfo
 
+    //получем все Bin из базы  даннных
+    val listSearchBins = getAllSaveBinsUseCase(repository = repository).invoke()
+    val scope = CoroutineScope(Dispatchers.Default)
 
     fun getBinInfo(bin: String) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -41,6 +52,9 @@ class BinViewModel : ViewModel() {
                         _binInfo.postValue(it)
                         _isError.postValue(false)
                         Log.d("API_LOG", "Response: ${info}")
+
+                      val dbModel =   Mapper.formatBinInfoInDbModel(bin=bin, binInfo = it)
+                        saveBinInfo(dbModel)
                     } ?: run {
                         _isError.postValue(true)
                         Log.d("API_LOG", "Response null: ${info}")
@@ -63,6 +77,14 @@ class BinViewModel : ViewModel() {
         }
 
 
+
+
+
+    }
+    fun saveBinInfo(dbModel :BinInfoDBModel) {
+        scope.launch {
+            saveBinInDbUseCase(repository = repository).invoke(dbModel)
+        }
     }
 
 }
