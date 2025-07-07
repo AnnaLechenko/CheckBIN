@@ -22,7 +22,8 @@ class ReportFragment : Fragment(R.layout.search_report_fragment) {
     private lateinit var adapter: BinAdapter
 
     //val viewModel:BinViewModel by lazy { ViewModelProvider(this)[BinViewModel::class.java] }
-    private val viewModel: BinViewModel by viewModels()
+
+   private val viewModel: BinViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
