@@ -47,7 +47,6 @@ class BinSearchFragment : Fragment(R.layout.bin_search_fragment) {
             val inputText = binding.etBinInput.text
             if (inputText.isNotEmpty() && inputText.isDigitsOnly() && inputText.length in 6..8) {
                 viewModel.getBinInfo(inputText.toString()) //апи 45717360
-                Log.d("API_LOG", "сделан запрос во вью модель во фрагменте")
             } else {
                 Toast.makeText(
                     requireContext(),
@@ -138,7 +137,6 @@ class BinSearchFragment : Fragment(R.layout.bin_search_fragment) {
     companion object {
 
         fun newInstance(): BinSearchFragment {
-            Log.d("API_LOG", "создан фрагмент бин")
             return BinSearchFragment()
 
         }
