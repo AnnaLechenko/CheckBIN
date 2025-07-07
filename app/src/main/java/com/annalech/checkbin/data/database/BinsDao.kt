@@ -12,7 +12,7 @@ interface BinsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBinInDB(binInfo: BinInfoDBModel)
 
-    @Query("SELECT * FROM bin_item_tabl ")
+    @Query("SELECT * FROM bin_item_tabl ORDER BY createdAt DESC")
     fun getAllBinInfo(): LiveData<List<BinInfoDBModel>>
 
 }

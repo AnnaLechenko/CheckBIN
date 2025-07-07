@@ -15,6 +15,7 @@ data class BinInfoDBModel(
     val bankName: String? = "Информация отсутствует",
     val bankCity: String? = "Информация отсутствует",
     val bankUrl: String? = "Информация отсутствует",
-    val bankPhone: String? = "Информация отсутствует"
+    val bankPhone: String? = "Информация отсутствует",
+    val createdAt: Long = System.currentTimeMillis()
 
 )

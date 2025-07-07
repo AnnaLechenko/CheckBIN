@@ -13,15 +13,15 @@ object Mapper {
         }
         return BinInfoDBModel(
             bin = bin.toLong(),
-            scheme = binInfo.scheme,
-            brand = binInfo.brand,
-            type = binInfo.type,
-            prepaid = statusPrepaid,
-            country = binInfo.country?.name,
-            bankName = binInfo.bank?.name,
-            bankCity = binInfo.bank?.city,
-            bankUrl = binInfo.bank?.url,
-            bankPhone = binInfo.bank?.phone
+            scheme = binInfo.scheme  ?: "Информация отсутствует",
+            brand = binInfo.brand ?: "Информация отсутствует",
+            type = binInfo.type ?: "Информация отсутствует",
+            prepaid = statusPrepaid ,
+            country = binInfo.country?.name ?: "Информация отсутствует",
+            bankName = binInfo.bank?.name ?: "Информация отсутствует",
+            bankCity = binInfo.bank?.city ?: "Информация отсутствует",
+            bankUrl = binInfo.bank?.url ?: "Информация отсутствует",
+            bankPhone = binInfo.bank?.phone ?: "Информация отсутствует"
         )
     }
 }

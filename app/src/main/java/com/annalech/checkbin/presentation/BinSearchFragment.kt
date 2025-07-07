@@ -1,5 +1,7 @@
 package com.annalech.checkbin.presentation
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,7 +25,7 @@ class BinSearchFragment : Fragment(R.layout.bin_search_fragment) {
         get() = _binding ?: throw Exception("No BinSearchFragmentBinding")
 
 
-    //   val viewModel: BinViewModel by lazy { ViewModelProvider(this)[BinViewModel::class.java] }
+
     private val viewModel: BinViewModel by viewModels()
 
 
@@ -79,7 +81,43 @@ class BinSearchFragment : Fragment(R.layout.bin_search_fragment) {
             binding.tvBankUrl.text = "Сайт: ${info.bank?.url ?: "Информация отсутствует"}"
             binding.tvBankPhone.text = "Телефон: ${info.bank?.phone ?: "Информация отсутствует"}"
 
+
+
+            binding.tvBankCity.setOnClickListener {
+                info.bank?.city?.let { city ->
+                    val uri = Uri.parse("google.navigation:q=${city}")
+                    val mapIntent = Intent(Intent.ACTION_VIEW, uri)
+                    mapIntent.setPackage("com.google.android.apps.maps")
+                    if (mapIntent.resolveActivity(requireActivity().packageManager) != null) {
+                        startActivity(mapIntent)
+                    }
+
+                }
+            }
+
+            binding.tvBankPhone.setOnClickListener {
+               val phone =  info.bank?.phone
+                if (phone.isNullOrBlank()){
+                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+                    startActivity(intent)
+                }else{
+                    Toast.makeText(requireContext(), "Номер телефона отсутствует", Toast.LENGTH_SHORT).show()
+                }
+
+
+            }
+
+
+
+            binding.tvBankUrl.setOnClickListener {
+                info.bank?.url?.let { url ->
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://$url"))
+                    startActivity(intent)
+                }
+            }
+
         }
+
 
         //ошибка получение информации по BIN
         viewModel.isError.observe(viewLifecycleOwner) { isError ->

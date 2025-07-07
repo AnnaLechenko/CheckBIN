@@ -46,6 +46,7 @@ class BinAdapter : RecyclerView.Adapter<BinAdapter.ViewHolder>() {
         val item = differ.currentList[position]
 
         with(holder.binding){
+            tvBIN.text = "Номер карты :${item.bin}"
             tvScheme.text = "Тип карты: ${item.scheme }"
             tvBrand.text =  "Бренд: ${item.brand }"
             tvType.text = "Тип: ${item.type  }"
